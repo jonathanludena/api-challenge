@@ -39,7 +39,12 @@ exports.getAllData = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
+// Se obtiene la URL de API EXTERNA desde la variable de entorno, si existe
 const API = process.env.URI_API_EXTERNA || undefined;
+/**
+ * Obtenemos la data desde la API externa
+ * @returns Item[] || []
+ */
 const getAllData = () => __awaiter(void 0, void 0, void 0, function* () {
     if (API) {
         const data = yield (0, axios_1.default)(API);
