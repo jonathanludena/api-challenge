@@ -28,10 +28,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const items_1 = __importDefault(require("./routes/items"));
 dotenv.config();
 const PORT = process.env.PORT || 3001;
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/api/items", items_1.default);
 app.listen(PORT, () => console.log(`Server listen on http://localhost:${PORT}`));

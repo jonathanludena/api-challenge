@@ -11,4 +11,5 @@ const router = express_1.default.Router();
  * @url /api/items
  */
 router.get("/", items_1.getData);
+router.get("/:id", items_1.getDataById);
 exports.default = router;

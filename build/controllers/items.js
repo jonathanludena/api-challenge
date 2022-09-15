@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getData = void 0;
+exports.getDataById = exports.getData = void 0;
 const items_1 = require("../services/items");
 /**
  * CHALLENGE API
@@ -21,11 +21,12 @@ const items_1 = require("../services/items");
  */
 const getData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { query: { q }, } = req;
-    if (!q)
+    if (!q) {
         return res.status(404).json({
             query: "",
             message: "No se recibió parametros para hacer la búsqueda",
         });
+    }
     const items = yield (0, items_1.getAllData)();
     let results;
     if (items.length > 0) {
@@ -34,8 +35,6 @@ const getData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             item.description.toLowerCase().includes(query) ||
             item.category.name.toLocaleLowerCase().includes(query));
         return res.status(200).json({ query: q, results });
-        // Si el resultado de la busqueda desde API debe tener un limite de 4
-        // return res.status(200).json({ query: q, results: results.slice(0, 4) });
     }
     else {
         return res
@@ -44,3 +43,29 @@ const getData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getData = getData;
+/**
+ * CHALLENGE API
+ * @url /api/items/:id
+ * @param req param :id -> lo que se va a buscar
+ * @param res
+ * @returns detalle de item
+ */
+const getDataById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { params: { id }, } = req;
+    if (!id) {
+        return res.status(404).json({
+            query: "",
+            message: "No se recibió id para hacer la búsqueda detallada",
+        });
+    }
+    const item = yield (0, items_1.getResultById)(+id);
+    if (item) {
+        return res.status(200).json({ data: item });
+    }
+    else {
+        return res
+            .status(400)
+            .json({ data: null, message: "Error API EXTERNA o interno" });
+    }
+});
+exports.getDataById = getDataById;

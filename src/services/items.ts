@@ -17,3 +17,12 @@ export const getAllData = async (): Promise<Item[] | []> => {
     return data.data;
   } else return [];
 };
+
+export const getResultById = async (id: number): Promise<Item | null> => {
+  try {
+    const data = await axios(`${API}/${id}`);
+    return data.data;
+  } catch (_error) {
+    return null;
+  }
+};

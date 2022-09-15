@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllData } from "../services/items";
+import { getAllData, getResultById } from "../services/items";
 import { Item } from "../types";
 
 /**
@@ -15,11 +15,12 @@ export const getData = async (req: Request, res: Response) => {
     query: { q },
   } = req;
 
-  if (!q)
+  if (!q) {
     return res.status(404).json({
       query: "",
       message: "No se recibió parametros para hacer la búsqueda",
     });
+  }
 
   const items = await getAllData();
   let results: Item[] | [];
@@ -33,11 +34,38 @@ export const getData = async (req: Request, res: Response) => {
         item.category.name.toLocaleLowerCase().includes(query)
     );
     return res.status(200).json({ query: q, results });
-    // Si el resultado de la busqueda desde API debe tener un limite de 4
-    // return res.status(200).json({ query: q, results: results.slice(0, 4) });
   } else {
     return res
       .status(400)
       .json({ query: q, message: "Error API EXTERNA o interno" });
+  }
+};
+
+/**
+ * CHALLENGE API
+ * @url /api/items/:id
+ * @param req param :id -> lo que se va a buscar
+ * @param res
+ * @returns detalle de item
+ */
+export const getDataById = async (req: Request, res: Response) => {
+  const {
+    params: { id },
+  } = req;
+
+  if (!id) {
+    return res.status(404).json({
+      query: "",
+      message: "No se recibió id para hacer la búsqueda detallada",
+    });
+  }
+
+  const item = await getResultById(+id);
+  if (item) {
+    return res.status(200).json({ data: item });
+  } else {
+    return res
+      .status(400)
+      .json({ data: null, message: "Error API EXTERNA o interno" });
   }
 };

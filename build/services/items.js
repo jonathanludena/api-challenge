@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllData = void 0;
+exports.getResultById = exports.getAllData = void 0;
 const axios_1 = __importDefault(require("axios"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
@@ -54,3 +54,13 @@ const getAllData = () => __awaiter(void 0, void 0, void 0, function* () {
         return [];
 });
 exports.getAllData = getAllData;
+const getResultById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield (0, axios_1.default)(`${API}/${id}`);
+        return data.data;
+    }
+    catch (_error) {
+        return null;
+    }
+});
+exports.getResultById = getResultById;

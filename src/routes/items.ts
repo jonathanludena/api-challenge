@@ -1,5 +1,5 @@
 import express from "express";
-import { getData } from "../controllers/items";
+import { getData, getDataById } from "../controllers/items";
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ const router = express.Router();
  * @url /api/items
  */
 router.get("/", getData);
+router.get("/:id", getDataById);
 
 export default router;
